@@ -1,28 +1,30 @@
-ʹ�����uname -a���鿴��
-����Ľ���У������x86_64����64λ(X64)��û�о���32λ(X86)��
+使用讯飞的libmsc.so文件及源码生成php扩展，使用php调用扩展将文字生成为（蜡笔小新等）的语音
+
+使用命令“uname -a”查看，
+输出的结果中，如果有x86_64就是64位(X64)，没有就是32位(X86)。
 
 
-��װ��չ
+安装扩展
 
-1.����Դ��/ext Ŀ¼
+1.进入源码/ext 目录
 
 ./ext_skel --extname=xfapp
 
 cd xfapp/
 
-vim config.M4 ȥ��16��18��ǰ��
+vim config.M4 去掉16，18行前的
 
 
 
-����Linux_voice.zip
+下载Linux_voice.zip
 
-��ѹ
+解压
 
 cd /Linux_voice
 
-(X64)ϵͳcd x64 cd libs/x64
+(X64)系统cd x64 cd libs/x64
 
-(X86)ϵͳcd x86 cd libs/x86
+(X86)系统cd x86 cd libs/x86
  
 cp libmsc.so /usr/local/lib/
 
@@ -37,30 +39,30 @@ gcc -lmsc -o -demo demo.c
 
 ./demo
 
-���Ƿ����� tts_sample.wav
+查看是否生成 tts_sample.wav
 
-����֮��
+生成之后
 
-��c�ļ�����demo.c�ļ����Լ��޸�
+在c文件调用demo.c文件，稍加修改
 
 phpize
 ./configure
 vim Makefie
 
-�ҵ� CFLAGS = -g -O2 ���� -lmsc
+找到 CFLAGS = -g -O2 添加 -lmsc
 
 make && make install
 
-php.ini ������չ
+php.ini 添加扩展
 
 
-ƽ������
+平滑启动
 cp/src/init.d  /etc/init.d/php-fpm
 
 kill -USR2 `cat /usr/local/php/var/run/php-fpm.pid`
 
 
-php ����������
+php 开机自启动
 
 chmod +x /etc/init.d/php-fpm
 
