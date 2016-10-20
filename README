@@ -1,0 +1,69 @@
+使用命令“uname -a”查看，
+输出的结果中，如果有x86_64就是64位(X64)，没有就是32位(X86)。
+
+
+安装扩展
+
+1.进入源码/ext 目录
+
+./ext_skel --extname=xfapp
+
+cd xfapp/
+
+vim config.M4 去掉16，18行前的
+
+
+
+下载Linux_voice.zip
+
+解压
+
+cd /Linux_voice
+
+(X64)系统cd x64 cd libs/x64
+
+(X86)系统cd x86 cd libs/x86
+ 
+cp libmsc.so /usr/local/lib/
+
+
+echo /usr/local/lib > /etc/ld.so.conf.d/local.conf 
+
+/sbin/ldconfig
+
+cd ../../src
+
+gcc -lmsc -o -demo demo.c
+
+./demo
+
+看是否生成 tts_sample.wav
+
+生成之后
+
+在c文件调用demo.c文件，稍加修改
+
+phpize
+./configure
+vim Makefie
+
+找到 CFLAGS = -g -O2 添加 -lmsc
+
+make && make install
+
+php.ini 添加扩展
+
+
+平滑启动
+cp/src/init.d  /etc/init.d/php-fpm
+
+kill -USR2 `cat /usr/local/php/var/run/php-fpm.pid`
+
+
+php 开机自启动
+
+chmod +x /etc/init.d/php-fpm
+
+chkconfig --add php-fpm
+
+chkconfig php-fpm on
